@@ -5,33 +5,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.andres.utilities.ConnectionUtil;
-
 public class UserDAOImpl implements UserDAO {
 
-	public boolean checkLogin(String username, String password) {
+	public boolean checkCredentials(String username, String password, Connection conn) throws SQLException {
 
-		try (Connection con = ConnectionUtil.getConnection()) {
+			String sql = "SELECT username, password FROM ers.users WHERE username = ? and password = ?";
 
-			String sql = "SELECT username FROM ers.users WHERE username = ?";
-
-			PreparedStatement ps = con.prepareStatement(sql);
+			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, username);
+			ps.setString(2, password);
 
 			ResultSet rs = ps.executeQuery();
-			String returnedUser = null;
 
 			if (rs.next()) {
-				returnedUser = rs.getString("username");
-			}
-			if (returnedUser != null) {
 				return true;
+			}else {
+				return false;
 			}
-
-			return false;
-
-		} catch (SQLException e) {
-			return false;
-		}
+			
 	}
 }

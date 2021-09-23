@@ -1,6 +1,9 @@
 package com.andres.dao;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public interface UserDAO {
 
-	public boolean checkLogin(String username, String password);
+	public boolean checkCredentials(String username, String password, Connection conn) throws SQLException;
 }

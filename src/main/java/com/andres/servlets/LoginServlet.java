@@ -2,11 +2,16 @@ package com.andres.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.andres.models.User;
+import com.andres.service.UserLoginService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Servlet implementation class LoginServlet
@@ -29,27 +34,33 @@ public class LoginServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		response.setContentType("text/plain");
+			
+		response.setContentType("text/html");
 		PrintWriter pw = response.getWriter();
 		
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		String jsonString = request.getReader().readLine();
 		
-//		try {
-//
-//			UserLoginService uls = new UserLoginService();
-//
-//			if (uls.checkLogin(username, password)) {
-//				pw.println("Good boi");
-//			}
-//				
-//		} catch (SQLException e) {
-//			pw.println("Bad bad boi");
-//		}
+		ObjectMapper om = new ObjectMapper();
 		
-		pw.println("Username: " + username);
-		pw.println("Password: " + password);
+		User u = om.readValue(jsonString, User.class);
+		
+		try {
+
+			UserLoginService uls = new UserLoginService();
+
+			if (uls.checkCredentials(u.getUsername(), u.getPassword())) {
+				System.out.println("Good boi");
+				response.sendRedirect(request.getContextPath() + "/EmployeeLanding.html");
+			}
+			else {
+				System.out.println("Bad boi");
+				pw.println("Bad boi");
+			}
+				
+		} catch (SQLException e) {
+			System.out.println("Bad bad boi");
+			pw.println("Bad bad boi");
+		}
 		
 		pw.close();
 

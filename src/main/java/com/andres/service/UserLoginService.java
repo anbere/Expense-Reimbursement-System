@@ -15,13 +15,12 @@ public class UserLoginService {
 		userDAO = new UserDAOImpl();
 	}
 	
-	public boolean checkLogin(String username, String password) throws SQLException {
+	public boolean checkCredentials(String username, String password) throws SQLException {
 		
 		try(Connection conn = ConnectionUtil.getConnection())
 		{
-			return userDAO.checkLogin(username, password);
+			return userDAO.checkCredentials(username, password, conn);
 		}
-		
 		
 	}
 	
