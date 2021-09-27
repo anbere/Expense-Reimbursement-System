@@ -3,25 +3,39 @@ package com.andres.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import com.andres.dao.UserDAO;
-import com.andres.dao.UserDAOImpl;
+import com.andres.dao.EmployeeDAO;
+import com.andres.dao.EmployeeDAOImpl;
+import com.andres.exceptions.UserNotFoundException;
+import com.andres.exceptions.InvalidPasswordException;
+import com.andres.models.Employee;
 import com.andres.utilities.ConnectionUtil;
 
 public class UserLoginService {
-	
-	UserDAO userDAO;
+
+	EmployeeDAO userDAO;
 
 	public UserLoginService() {
-		userDAO = new UserDAOImpl();
+		userDAO = new EmployeeDAOImpl();
 	}
-	
-	public boolean checkCredentials(String username, String password) throws SQLException {
-		
-		try(Connection conn = ConnectionUtil.getConnection())
+
+	public Employee checkCredentials(String username, String password) throws SQLException, InvalidPasswordException, UserNotFoundException {
+
+		Employee user = null;
+
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			user = userDAO.checkCredentials(username, password, conn);
+		}
+
+		if (user == null) {
+			System.out.println("No user found");
+			throw new UserNotFoundException();
+		}else if (user.getUsername() == "")
 		{
-			return userDAO.checkCredentials(username, password, conn);
+			System.out.println("Wrong password");
+			throw new InvalidPasswordException();
 		}
 		
+		return user;
 	}
-	
+
 }

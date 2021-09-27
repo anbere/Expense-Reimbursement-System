@@ -11,14 +11,18 @@ function checkCredentials() {
         password: document.getElementById('floatingPassword').value
     }
 
-    fetch("LoginServlet", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userInfo)
-        })
-        .then((response) => window.location = response.url
-		)
+    fetch("login", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userInfo)
+    }).then(response => 
+		{
+			response.redirected ? window.location.href = response.url: window.alert("Invalid Username or Password");
+		})
+
+    //        .then((response) => window.location = response.url
+    //		)
 
 }

@@ -1,0 +1,42 @@
+Employee
+	Login
+		- checkCredentials Boolean/Employee
+			SELECT username, password statement
+
+	Submit reimbursement request
+		- createReimbursementRequest Reimbursement
+			INSERT INTO Reimbursement (values)
+	View pending requests
+		- getPendingReimbursementsByUser ArrayList<Reimbursement>
+			SELECT * FROM Reimbursement where username AND pending
+	View resolved requests 		
+		- getResolvedReimbursementsByUser ArrayList<Reimbursement>
+			SELECT * FROM Reimbursement where username AND resolved
+	View my account information 
+		- getEmployeeByUsername Employee
+			SELECT * FROM Employees where username match
+	Update account information 
+		- updateEmployeeInfo Employee
+			UPDATE email, password where username match
+			
+Manager
+	Login
+		- checkCredentials(Employee) Boolean/Employee
+		
+	Approve/Deny pending reimbursement requests
+		- getAllPendingReimbursements 
+			SELECT * FROM Reimbursement where pending AND not manager
+		- updateReimbursementsStatus Reimbursement
+			UPDATE
+	View all pending requests of all employees
+		- getAllPendingReimbursements ArrayList<Reimbursement>
+			SELECT * FROM Reimbursement where pending AND not manager
+	View all resolved requests of all employees
+		- getAllResolvedReimbursements ArrayList<Reimbursement>
+			SELECT * FROM Reimbursement where pending AND not manager
+	View reimbursement requests of a specific employees
+		- getAllReimbursementsByUser ArrayList<Reimbursement>
+			SELECT * FROM Reimbursement where username AND not manager
+	View all employees
+		- getAllEmployees Employee
+			SELECT * FROM Employees where not manager
