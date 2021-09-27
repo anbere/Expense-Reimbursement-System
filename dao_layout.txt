@@ -40,3 +40,53 @@ Manager
 	View all employees
 		- getAllEmployees Employee
 			SELECT * FROM Employees where not manager
+
+
+
+
+
+
+create table employees(
+username VARCHAR(16),
+password varchar(16),
+first_name varchar(30),
+last_name varchar(30),
+email varchar(100) unique,
+role_id integer, -- 0: Employee 1: Manager
+primary key(username)
+);
+
+create table reimbursement_status(
+reimb_status_id integer,
+reimb_status varchar(10),
+primary key(reimb_status_id)
+);
+
+create table reimbursement_type(
+reimb_type_id integer,
+reimb_type varchar(10),
+primary key(reimb_type_id)
+);
+
+create table reimbursements(
+reimb_id integer,
+reimb_status_id integer default 0, -- 0: pending, 1: resolved
+reimb_author varchar(16),
+reimb_type_id integer, -- 0:...
+reimb_amount varchar(12),
+reimb_receipt bytea,
+primary key(reimb_id),
+constraint fk_user_author
+	foreign key(reimb_author) references employees(username),
+constraint fk_reimb_status
+	foreign key(reimb_status_id) references reimbursement_status(reimb_status_id),
+constraint fk_reimb_type
+	foreign key(reimb_type_id) references reimbursement_type(reimb_type_id)
+);
+
+
+
+
+drop schema ers cascade;
+
+create schema ers;
