@@ -13,7 +13,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 		Employee user = null;
 
-		String sql = "SELECT * FROM ers.users WHERE username = ?";
+		String sql = "SELECT * FROM ers.employees WHERE username = ?";
 
 		PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -23,11 +23,15 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 		if (rs.next()) {
 
-			if (password == rs.getString("password")) {
-				String id = rs.getString("username");
+			if (password.equals(rs.getString("password"))) {
+				String usern = rs.getString("username");
 				String pass = rs.getString("password");
+				String first = rs.getString("first_name");
+				String last = rs.getString("last_name");
+				String email = rs.getString("email");
+				int id = rs.getInt("role_id");
 
-				user = new Employee(id, pass);
+				user = new Employee(usern, pass, first, last, email, id);
 
 			} else
 				user = new Employee();
@@ -35,5 +39,5 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		
 		return user;
 	}
-
+	
 }

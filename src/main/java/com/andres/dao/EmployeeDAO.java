@@ -8,4 +8,5 @@ import com.andres.models.Employee;
 public interface EmployeeDAO {
 
 	public Employee checkCredentials(String username, String password, Connection conn) throws SQLException;
+	
 }

@@ -28,7 +28,6 @@ public class LoginServlet extends HttpServlet {
 	public LoginServlet() {
 		super();
 		userLoginService = new UserLoginService();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -40,37 +39,40 @@ public class LoginServlet extends HttpServlet {
 		
 		// Do I need this?
 		//response.setContentType("text/html");
-		
-		
-		String jsonString = request.getReader().readLine();
 
 		ObjectMapper om = new ObjectMapper();
 		
-		Employee user = om.readValue(jsonString, Employee.class);
+		Employee user = om.readValue(request.getReader(), Employee.class);
 
 		try {
-
-			HttpSession session = request.getSession();
 			
 			Employee activeUser = userLoginService.checkCredentials(user.getUsername(), user.getPassword());
+			System.out.println(activeUser.toString());
 			
-			session.setAttribute("username", activeUser.getUsername());
-//			session.setAttribute("password", activeUser.getPassword());
+			HttpSession session = request.getSession();
+			session.setAttribute("currentUser", activeUser);
 			
-			response.sendRedirect("DashboardServlet");
+			if(activeUser.getRole_id() == 0)
+			{
+				response.sendRedirect("Dashboard.html");
+			}
+			else
+			{
+				response.sendRedirect("ManagerDashboard.html");
+			}
+			
 
 		} catch (SQLException e) {
-			System.out.println("Bad bad boi");
+			System.out.println("Bad bad boi.");
 			
 		} catch (InvalidPasswordException e) {
-			
+			System.out.println("Invalid password.");
 
 		} catch (UserNotFoundException e) {
-			
+			System.out.println("User not found.");
 
 		}
 
-		//pw.close();
 	}
 
 }

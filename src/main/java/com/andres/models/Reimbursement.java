@@ -1,38 +1,31 @@
 package com.andres.models;
 
-import java.util.Arrays;
-
 public class Reimbursement {
 
 	private int r_id;
-	private int r_status;
+	private int r_status; // 0: Pending, 1: Approved, 2: Denied
 	private String r_author;
-	private String r_type;
-	private String r_amount;
-	private byte[] receipt;
+	private int r_type; // 0: Lodging, 2: Travel, 3: Food, 4: Other
+	private int r_amount;
+	private String r_description;
 
 	public Reimbursement() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public Reimbursement(int r_id, int r_status, String r_author, String r_type, String r_amount) {
-		super();
+	public Reimbursement(int r_type, int r_amount, String r_description) {
+		this.r_type = r_type;
+		this.r_amount = r_amount;
+		this.r_description = r_description;
+	}
+
+	public Reimbursement(int r_id, int r_status, String r_author, int r_type, int r_amount, String description) {
 		this.r_id = r_id;
 		this.r_status = r_status;
 		this.r_author = r_author;
 		this.r_type = r_type;
 		this.r_amount = r_amount;
-	}
-
-	public Reimbursement(int r_id, int r_status, String r_author, String r_type, String r_amount, byte[] receipt) {
-		super();
-		this.r_id = r_id;
-		this.r_status = r_status;
-		this.r_author = r_author;
-		this.r_type = r_type;
-		this.r_amount = r_amount;
-		this.receipt = receipt;
+		this.r_description = description;
 	}
 
 	public int getR_id() {
@@ -59,34 +52,36 @@ public class Reimbursement {
 		this.r_author = r_author;
 	}
 
-	public String getR_type() {
+	public int getR_type() {
 		return r_type;
 	}
 
-	public void setR_type(String r_type) {
+	public void setR_type(int r_type) {
 		this.r_type = r_type;
 	}
 
-	public String getR_amount() {
+	public int getR_amount() {
 		return r_amount;
 	}
 
-	public void setR_amount(String r_amount) {
+	public void setR_amount(int r_amount) {
 		this.r_amount = r_amount;
 	}
 
-	public byte[] getReceipt() {
-		return receipt;
+	public String getR_description() {
+		return r_description;
 	}
 
-	public void setReceipt(byte[] receipt) {
-		this.receipt = receipt;
+	public void setR_description(String r_description) {
+		this.r_description = r_description;
 	}
 
 	@Override
 	public String toString() {
 		return "Reimbursement [r_id=" + r_id + ", r_status=" + r_status + ", r_author=" + r_author + ", r_type="
-				+ r_type + ", r_amount=" + r_amount + ", receipt=" + Arrays.toString(receipt) + "]";
+				+ r_type + ", r_amount=" + r_amount + ", r_description=" + r_description + "]";
 	}
+	
+	
 
 }

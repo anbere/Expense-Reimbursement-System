@@ -81,8 +81,6 @@ public class Employee {
 	public String toString() {
 		return "Employee [username=" + username + ", password=" + password + ", first_name=" + first_name
 				+ ", last_name=" + last_name + ", email=" + email + ", role_id=" + role_id + "]";
-	}
-	
-	
+	}	
 
 }
