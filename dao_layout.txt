@@ -56,11 +56,18 @@ role_id integer, -- 0: Employee 1: Manager
 primary key(username)
 );
 
+INSERT INTO ers.employees VALUES('anbers', 'pass', 'andres', 'rodriguez', 'email@email.com', 0);
+
+
 create table reimbursement_status(
 reimb_status_id integer,
 reimb_status varchar(10),
 primary key(reimb_status_id)
 );
+
+INSERT INTO ers.reimbursement_status VALUES(0, 'PENDING');
+INSERT INTO ers.reimbursement_status VALUES(1, 'APPROVED');
+INSERT INTO ers.reimbursement_status VALUES(2, 'DENIED');
 
 create table reimbursement_type(
 reimb_type_id integer,
@@ -68,13 +75,19 @@ reimb_type varchar(10),
 primary key(reimb_type_id)
 );
 
+INSERT INTO ers.reimbursement_type VALUES(0, 'LODGING');
+INSERT INTO ers.reimbursement_type VALUES(1, 'TRAVEL');
+INSERT INTO ers.reimbursement_type VALUES(2, 'FOOD');
+INSERT INTO ers.reimbursement_type VALUES(3, 'OTHER');
+
+
 create table reimbursements(
 reimb_id integer,
 reimb_status_id integer default 0, -- 0: pending, 1: resolved
 reimb_author varchar(16),
-reimb_type_id integer, -- 0:...
-reimb_amount varchar(12),
-reimb_receipt bytea,
+reimb_type_id integer, -- 0: Lodging, 1: Travel, 2: Food, 3: Other
+reimb_amount integer,
+reimb_description varchar(250),
 primary key(reimb_id),
 constraint fk_user_author
 	foreign key(reimb_author) references employees(username),
@@ -90,3 +103,8 @@ constraint fk_reimb_type
 drop schema ers cascade;
 
 create schema ers;
+
+select r.reimb_id, r.reimb_author, r.reimb_amount, rs.reimb_status 
+from reimbursements r
+join reimbursement_status rs 
+on r.reimb_status_id = rs.reimb_status_id 
