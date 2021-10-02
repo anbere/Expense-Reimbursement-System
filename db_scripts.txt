@@ -1,0 +1,87 @@
+create table employees(
+username VARCHAR(16),
+password varchar(16),
+first_name varchar(30),
+last_name varchar(30),
+email varchar(100) unique,
+role_id integer, -- 0: Employee 1: Manager
+primary key(username)
+);
+
+INSERT INTO ers.employees VALUES('anbers', 'pass', 'andres', 'rodriguez', 'email@email.com', 0);
+
+
+create table reimbursement_status(
+reimb_status_id integer,
+reimb_status varchar(10),
+primary key(reimb_status_id)
+);
+
+INSERT INTO ers.reimbursement_status VALUES(0, 'PENDING');
+INSERT INTO ers.reimbursement_status VALUES(1, 'APPROVED');
+INSERT INTO ers.reimbursement_status VALUES(2, 'DENIED');
+
+create table reimbursement_type(
+reimb_type_id integer,
+reimb_type varchar(10),
+primary key(reimb_type_id)
+);
+
+INSERT INTO ers.reimbursement_type VALUES(0, 'LODGING');
+INSERT INTO ers.reimbursement_type VALUES(1, 'TRAVEL');
+INSERT INTO ers.reimbursement_type VALUES(2, 'FOOD');
+INSERT INTO ers.reimbursement_type VALUES(3, 'OTHER');
+
+
+create table reimbursements(
+reimb_id integer,
+reimb_status_id integer default 0, -- 0: pending, 1: resolved
+reimb_author varchar(16),
+reimb_type_id integer, -- 0: Lodging, 1: Travel, 2: Food, 3: Other
+reimb_amount integer,
+reimb_description varchar(250),
+primary key(reimb_id),
+constraint fk_user_author
+	foreign key(reimb_author) references employees(username),
+constraint fk_reimb_status
+	foreign key(reimb_status_id) references reimbursement_status(reimb_status_id),
+constraint fk_reimb_type
+	foreign key(reimb_type_id) references reimbursement_type(reimb_type_id)
+);
+
+
+
+
+drop schema ers cascade;
+
+create schema ers;
+
+select r.reimb_id, r.reimb_author, r.reimb_amount, rs.reimb_status 
+from reimbursements r
+join reimbursement_status rs 
+on r.reimb_status_id = rs.reimb_status_id 
+
+SELECT r.reimb_id, r.reimb_status_id, rs.reimb_status, r.reimb_author, rt.reimb_type, r.reimb_amount, r.reimb_description 
+FROM ers.reimbursements r 
+join ers.reimbursement_type rt 
+on r.reimb_type_id  = rt.reimb_type_id 
+join ers.reimbursement_status rs 
+on r.reimb_status_id = rs.reimb_status_id
+where r.reimb_status_id = 0
+order by r.reimb_author, reimb_id 
+
+
+
+
+insert into ers.reimbursements values(12346, 0, 'anbers', 1, 696969, 'This is a description');
+insert into ers.reimbursements values(54321, 0, 'anbers', 1, 696969, 'This is a description');
+insert into ers.reimbursements values(12344, 0, 'anbers', 1, 696969, 'This is a description');
+insert into ers.reimbursements values(12343, 0, 'anbers', 1, 696969, 'This is a description');
+insert into ers.reimbursements values(12342, 0, 'anbers', 1, 696969, 'This is a description');
+
+update ers.reimbursements 
+set reimb_status_id = 2
+where reimb_id = 12345
+
+truncate ers.reimbursements 
+
