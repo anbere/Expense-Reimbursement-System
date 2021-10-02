@@ -23,7 +23,8 @@ public class ReimbursementService {
 		
 		try(Connection conn = ConnectionUtil.getConnection())
 		{
-			reimbursementDAO.createReimbursementByUser(username, r_type, amount, description, conn);
+			Reimbursement rm = reimbursementDAO.createReimbursementByUser(username, r_type, amount, description, conn);
+			System.out.println("From RMB Service, after pulling from db: " + rm);
 			return true;
 		}
 		
@@ -67,14 +68,14 @@ public class ReimbursementService {
 		
 	}
 	
-	public ArrayList<Reimbursement> getAllPendingReimbursements() throws SQLException
+	public ArrayList<Reimbursement> getAllPendingReimbursements(int offset) throws SQLException
 	{
 		ArrayList<Reimbursement> pendingReimbursements = null;
 		
 		try(Connection conn = ConnectionUtil.getConnection())
 		{
 			try {
-				pendingReimbursements = reimbursementDAO.getAllPendingReimbursements(conn);
+				pendingReimbursements = reimbursementDAO.getAllPendingReimbursements(2 * offset, conn);
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			} catch (NoPendingReimbursementsException e) {
@@ -85,14 +86,14 @@ public class ReimbursementService {
 		return pendingReimbursements;
 	}
 	
-	public ArrayList<Reimbursement> getAllCompletedReimbursements() throws SQLException
+	public ArrayList<Reimbursement> getAllCompletedReimbursements(int offset) throws SQLException
 	{
 		ArrayList<Reimbursement> pendingReimbursements = null;
 		
 		try(Connection conn = ConnectionUtil.getConnection())
 		{
 			try {
-				pendingReimbursements = reimbursementDAO.getAllCompletedReimbursements(conn);
+				pendingReimbursements = reimbursementDAO.getAllCompletedReimbursements(2 * offset, conn);
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			} catch (NoPendingReimbursementsException e) {
@@ -101,5 +102,19 @@ public class ReimbursementService {
 		}
 		
 		return pendingReimbursements;
+	}
+	
+	public void updateReimbursementStatus(int id, int status) throws SQLException
+	{
+		Reimbursement reimbursement = null;
+		try(Connection conn = ConnectionUtil.getConnection())
+		{
+			reimbursement = reimbursementDAO.updateReimbursementStatus(id, status, conn);
+			System.out.println("Updated Reimbursement from RBService: " + reimbursement.toString());
+		}
+		catch(SQLException e)
+		{
+			System.out.println(e.getMessage());
+		}
 	}
 }

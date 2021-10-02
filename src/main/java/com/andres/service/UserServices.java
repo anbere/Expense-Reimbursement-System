@@ -2,6 +2,7 @@ package com.andres.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.andres.dao.EmployeeDAO;
 import com.andres.dao.EmployeeDAOImpl;
@@ -10,11 +11,11 @@ import com.andres.exceptions.UserNotFoundException;
 import com.andres.models.Employee;
 import com.andres.utilities.ConnectionUtil;
 
-public class UserLoginService {
+public class UserServices {
 
 	EmployeeDAO employeeDAO;
 
-	public UserLoginService() {
+	public UserServices() {
 		employeeDAO = new EmployeeDAOImpl();
 	}
 
@@ -36,6 +37,19 @@ public class UserLoginService {
 		}
 		
 		return user;
+	}
+	
+	public ArrayList<Employee> getAllEmployees() throws SQLException
+	{
+		ArrayList<Employee> allEmps = new ArrayList<>();
+		try(Connection conn = ConnectionUtil.getConnection())
+		{
+			allEmps = employeeDAO.getAllEmployees(conn);
+		}catch(SQLException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		return allEmps;
 	}
 
 }

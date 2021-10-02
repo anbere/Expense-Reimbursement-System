@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import com.andres.exceptions.InvalidPasswordException;
 import com.andres.exceptions.UserNotFoundException;
 import com.andres.models.Employee;
-import com.andres.service.UserLoginService;
+import com.andres.service.UserServices;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -20,14 +20,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private UserLoginService userLoginService;
+	private UserServices userLoginService;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public LoginServlet() {
 		super();
-		userLoginService = new UserLoginService();
+		userLoginService = new UserServices();
 	}
 
 	/**

@@ -48,6 +48,22 @@ body {
     opacity: 0.8;
 }
 
+.btn_sml {
+    background-color: #004170;
+    font-size: smaller;
+    color: white;
+    padding: 4px;
+    border: none;
+    border-radius: 10%;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.btn_sml:hover {
+    color: #fff;
+    opacity: 1;
+}
+
 .btn:hover {
     color: #fff;
     opacity: 1;

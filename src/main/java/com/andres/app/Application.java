@@ -1,31 +1,32 @@
 package com.andres.app;
 
-import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-import com.andres.dao.ReimbursementDAOImpl;
-import com.andres.exceptions.NoPendingReimbursementsException;
-import com.andres.utilities.ConnectionUtil;
+import com.andres.models.Employee;
+import com.andres.service.UserServices;
 
 public class Application {
 
 	public static void main(String[] args) {
 
+		ArrayList<Employee> emps = new ArrayList<>();
 
-
-		ReimbursementDAOImpl rdi = new ReimbursementDAOImpl();
+		UserServices us = new UserServices();
 		
-		try(Connection conn = ConnectionUtil.getConnection())
-		{
-			System.out.println(rdi.getPendingReimbursementsByUser("sdf", conn).toString());
-			
+		try {
+			emps = us.getAllEmployees();
 		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (NoPendingReimbursementsException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
 		
+		System.out.println(emps.toString());
+		
+		for(int x = 0; x < emps.size(); x++)
+		{
+			System.out.println(emps.get(x).toString());
+		}
 
 	}
 

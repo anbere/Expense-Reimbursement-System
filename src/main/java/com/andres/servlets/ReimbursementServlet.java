@@ -41,14 +41,12 @@ public class ReimbursementServlet extends HttpServlet {
 		
 		Reimbursement reimbursement = om.readValue(request.getReader(), Reimbursement.class);
 		
-		System.out.println(reimbursement);
-		
 		HttpSession session = request.getSession();
 		Employee loggedInEmp = (Employee)session.getAttribute("currentUser");
 		
 		try {
 	
-			if(reimbursementService.createReimbursementByUser(loggedInEmp.getUsername(), reimbursement.getR_type(), reimbursement.getR_amount(), reimbursement.getR_description()))
+			if(reimbursementService.createReimbursementByUser(loggedInEmp.getUsername(), reimbursement.getR_type_id(), reimbursement.getR_amount(), reimbursement.getR_description()))
 			{
 				PrintWriter out = response.getWriter();
 				out.append("{\"success\":\"true\"}");

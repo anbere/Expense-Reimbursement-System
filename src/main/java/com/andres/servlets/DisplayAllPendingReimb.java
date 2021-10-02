@@ -40,8 +40,11 @@ public class DisplayAllPendingReimb extends HttpServlet {
 //		HttpSession session = request.getSession();
 //		Employee currentEmp = (Employee)session.getAttribute("currentUser");
 		
+		Integer offset = Integer.parseInt(request.getReader().readLine().replaceAll("[^\\d.]", ""));
+		System.out.println("pending offset: " + offset);
+		
 		try {
-			ArrayList<Reimbursement> reimbursements = reimbursementService.getAllPendingReimbursements();
+			ArrayList<Reimbursement> reimbursements = reimbursementService.getAllPendingReimbursements(offset);
 			System.out.println(reimbursements);
 			Gson gson = new Gson();
 			String jsonArray = gson.toJson(reimbursements);
