@@ -1,5 +1,7 @@
 var pendingOffset = 0;
 var completedOffset = 0;
+var pendingEmpOffset = 0;
+var completedEmpOffset = 0;
 
 function update() {
     fetch('DashboardServlet', {
@@ -27,15 +29,30 @@ function populatePending() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }
-            // body: JSON.stringify(pending)
+            },
+            body: JSON.stringify(pendingEmpOffset)
         }).then(response => response.json())
         .then(data => {
-            console.log("data in populate pending: " + data);
+            if (pendingEmpOffset <= 0)
+                document.getElementById("pendEmployeePrevBtn").className = 'btn_sml hideButton';
+            else
+                document.getElementById("pendEmployeePrevBtn").className = 'btn_sml showButton';
+
+            if (data.length <= 12) {
+                document.getElementById("pendEmployeeNextBtn").className = 'btn_sml hideButton';
+            } else {
+                document.getElementById("pendEmployeeNextBtn").className = 'btn_sml showButton';
+            }
+
             var empTable = document.getElementById('emp_pending_body');
+
             if (empTable.childElementCount === data.length)
                 return;
-            for (db_row of data) {
+
+            empTable.innerHTML = "";
+            var tableLength = data.length <= 12 ? data.length : 12;
+            for (let i = 0; i < tableLength; i++) {
+                let db_row = data[i];
                 // let current = JSON.stringify(db_row);
                 var row = empTable.insertRow(-1);
                 var id = row.insertCell(0);
@@ -44,7 +61,7 @@ function populatePending() {
                 var description = row.insertCell(3);
 
                 id.innerHTML = db_row.r_id;
-                amount.innerHTML = db_row.r_amount;
+                amount.innerHTML = formatter.format(db_row.r_amount / 100);
                 type.innerHTML = db_row.r_type;
                 description.innerHTML = db_row.r_description;
             }
@@ -57,29 +74,71 @@ function populateCompleted() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }
-            // body: JSON.stringify(pending)
+            },
+            body: JSON.stringify(completedEmpOffset)
         }).then(response => response.json())
         .then(data => {
-            console.log('data populateCompleted: ', data);
+            if (completedEmpOffset <= 0)
+                document.getElementById("compEmployeePrevBtn").className = 'btn_sml hideButton';
+            else
+                document.getElementById("compEmployeePrevBtn").className = 'btn_sml showButton';
+
+            if (data.length <= 12) {
+                document.getElementById("compEmployeeNextBtn").className = 'btn_sml hideButton';
+            } else {
+                document.getElementById("compEmployeeNextBtn").className = 'btn_sml showButton';
+            }
+
             var empTable = document.getElementById('emp_completed_body');
+
             if (empTable.childElementCount === data.length)
                 return;
-            for (db_row of data) {
+
+            empTable.innerHTML = "";
+            var tableLength = data.length <= 12 ? data.length : 12;
+            for (let i = 0; i < tableLength; i++) {
+                let db_row = data[i];
                 // let current = JSON.stringify(db_row);
                 var row = empTable.insertRow(-1);
                 var id = row.insertCell(0);
                 var amount = row.insertCell(1);
                 var type = row.insertCell(2);
                 var description = row.insertCell(3);
+                var status = row.insertCell(4);
 
                 id.innerHTML = db_row.r_id;
-                amount.innerHTML = db_row.r_amount;
+                amount.innerHTML = formatter.format(db_row.r_amount / 100);
                 type.innerHTML = db_row.r_type;
                 description.innerHTML = db_row.r_description;
+                status.innerHTML = db_row.r_status;
             }
         });
 }
+
+function pendingEmployeeNext() {
+    pendingEmpOffset++;
+    populatePending();
+}
+
+function pendingEmployeePrev() {
+    if (pendingEmpOffset > 0) {
+        pendingEmpOffset--;
+    }
+    populatePending();
+}
+
+function completedEmployeePrev() {
+    if (completedEmpOffset > 0) {
+        completedEmpOffset--;
+    }
+    populateCompleted();
+}
+
+function completedEmployeeNext() {
+    completedEmpOffset++;
+    populateCompleted();
+}
+
 
 function populateManagerPending() {
     fetch('DisplayAllPendingReimb', {
@@ -92,14 +151,26 @@ function populateManagerPending() {
         .then(data => {
             console.log('populateManagerPending', data);
 
+            if (pendingOffset <= 0)
+                document.getElementById("pendManagerPrevBtn").className = 'btn_sml hideButton';
+            else
+                document.getElementById("pendManagerPrevBtn").className = 'btn_sml showButton';
+
+            if (data.length <= 12) {
+                document.getElementById("pendManagerNextBtn").className = 'btn_sml hideButton';
+            } else {
+                document.getElementById("pendManagerNextBtn").className = 'btn_sml showButton';
+            }
+
             var empTable = document.getElementById('mng_pending_body');
 
-            if (empTable.childElementCount - 1 === data.length)
+            if (empTable.childElementCount === data.length)
                 return;
 
             empTable.innerHTML = "";
-
-            for (db_row of data) {
+            var tableLength = data.length <= 12 ? data.length : 12;
+            for (let i = 0; i < tableLength; i++) {
+                let db_row = data[i];
                 // let current = JSON.stringify(db_row);
                 var row = empTable.insertRow(-1);
                 var id = row.insertCell(0);
@@ -111,12 +182,24 @@ function populateManagerPending() {
 
                 id.innerHTML = db_row.r_id;
                 empUser.innerHTML = db_row.r_author;
-                amount.innerHTML = db_row.r_amount;
+                amount.innerHTML = formatter.format(db_row.r_amount / 100);
                 type.innerHTML = db_row.r_type;
                 description.innerHTML = db_row.r_description;
                 status.innerHTML = "<button class=\"btn_sml\" onclick='approveRequest(this)'>Approve</button> <button class=\"btn_sml\" onclick='denyRequest(this)'>Deny</button>"
             }
         });
+}
+
+function pendingManagerNext() {
+    pendingOffset++;
+    populateManagerPending();
+}
+
+function pendingManagerPrev() {
+    if (pendingOffset > 0) {
+        pendingOffset--;
+    }
+    populateManagerPending();
 }
 
 function populateManagerCompleted() {
@@ -130,12 +213,27 @@ function populateManagerCompleted() {
         .then(data => {
             console.log("populate manager completed data: ", data);
 
+            if (completedOffset <= 0)
+                document.getElementById("compManagerPrevBtn").className = 'btn_sml hideButton';
+            else
+                document.getElementById("compManagerPrevBtn").className = 'btn_sml showButton';
+
+            if (data.length <= 12) {
+                document.getElementById("compManagerNextBtn").className = 'btn_sml hideButton';
+            } else {
+                document.getElementById("compManagerNextBtn").className = 'btn_sml showButton';
+            }
+
             var empTable = document.getElementById('mng_completed_body');
+
             if (empTable.childElementCount === data.length)
                 return;
 
             empTable.innerHTML = "";
-            for (db_row of data) {
+
+            var tableLength = data.length <= 12 ? data.length : 12;
+            for (let i = 0; i < tableLength; i++) {
+                let db_row = data[i];
                 // let current = JSON.stringify(db_row);
                 var row = empTable.insertRow(-1);
                 var id = row.insertCell(0);
@@ -148,37 +246,12 @@ function populateManagerCompleted() {
                 id.innerHTML = db_row.r_id;
                 empUser.innerHTML = db_row.r_author;
                 status.innerHTML = db_row.r_status;
-                amount.innerHTML = db_row.r_amount;
+                amount.innerHTML = formatter.format(db_row.r_amount / 100);
                 type.innerHTML = db_row.r_type;
                 description.innerHTML = db_row.r_description;
             }
 
         });
-}
-
-function createRequest() {
-
-    let reimbursementInfo = {
-        r_type_id: document.getElementById("r_reason").value,
-        r_amount: document.getElementById("r_amount").value,
-        r_description: document.getElementById("description").value
-    }
-
-    fetch('ReimbursementServlet', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(reimbursementInfo)
-        }).then(response => response.json())
-        .then(data => {
-            data.success ? reimbursementCreated() = "Dashboard.html" : alert("Reimbursement was unable to be created.")
-        })
-}
-
-function reimbursementCreated() {
-    alert("Reimbursement succesfully created.")
-    window.location.href = "Dashboard.html";
 }
 
 function approveRequest(that) {
@@ -198,10 +271,6 @@ function approveRequest(that) {
             populateManagerPending();
         }
     });
-
-    // let data = Array.from(peepee);
-    // console.log(data.map(childNodes => childNodes.innerHTML));
-    // console.log("mapping peepee: ", peepee.map(childNode => childNode.innerHTML));
 }
 
 function denyRequest(that) {
@@ -220,25 +289,69 @@ function denyRequest(that) {
             populateManagerPending();
         }
     });
-
-    // let data = Array.from(peepee);
-    // console.log(data.map(childNodes => childNodes.innerHTML));
-    // console.log("mapping peepee: ", peepee.map(childNode => childNode.innerHTML));
 }
 
-// function validAmount(elem) {
+function completedManagerNext() {
+    completedOffset++;
+    populateManagerCompleted();
+}
 
-//     let RegExpr = new RegExp(/^(\d+(\.\d{0,2})?|\.?\d{1,2})$/); //For currency
-//     let val = document.getElementById("r_amount").value;
+function completedManagerPrev() {
+    if (completedOffset > 0) {
+        completedOffset--;
+    }
+    populateManagerCompleted();
+}
 
-//     if (RegExpr.test(elem.value)) {
-//         console.log("regex matches")
-//         val = elem.value;
-//     } else {
-//         console.log("regex no match")
-//         elem.value = val;
-//     }
-// }
+function createRequest() {
+
+    if (!validAmount(document.getElementById("r_amount").value)) {
+        alert("Invalid amount")
+        return;
+    }
+
+    if (!validDescription(document.getElementById("description").value)) {
+        alert("Descrption must be under 250 characters.")
+        return;
+    }
+
+
+    let reimbursementInfo = {
+        r_type_id: document.getElementById("r_reason").value,
+        r_amount: document.getElementById("r_amount").value * 100,
+        r_description: document.getElementById("description").value
+    }
+
+    console.log("was valid amount")
+
+    fetch('ReimbursementServlet', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(reimbursementInfo)
+        }).then(response => response.json())
+        .then(data => {
+            data.success ? reimbursementCreated() = "Dashboard.html" : alert("Reimbursement was unable to be created.")
+        })
+}
+
+function validAmount(amount) {
+
+    let RegExpr = new RegExp(/^(\d+(\.\d{0,2})?|\.?\d{1,2})$/); //For currency
+
+    return (RegExpr.test(amount));
+}
+
+function validDescription(desc) {
+    return (desc.length < 250);
+}
+
+function reimbursementCreated() {
+    alert("Reimbursement succesfully created.")
+    window.location.href = "Dashboard.html";
+}
+
 
 function openPage(pageName, elmnt, color) {
     //Hide all elements with class="tabcontent" by default */
@@ -264,7 +377,7 @@ function openPage(pageName, elmnt, color) {
 }
 
 // Get the element with id="defaultOpen" and click on it
-//document.getElementById("defaultOpen").click();
+document.getElementById("defaultOpen").click();
 
 function signOut() {
     fetch('EndSessionServlet', {
@@ -275,5 +388,14 @@ function signOut() {
     }).then(window.location.href = "index.html")
 
 }
+
+var formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
 
 //ManagerDashboardServlet

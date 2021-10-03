@@ -68,3 +68,11 @@ body {
     color: #fff;
     opacity: 1;
 }
+
+.hideButton {
+    visibility: hidden;
+}
+
+.showButton {
+    visibility: visible;
+}

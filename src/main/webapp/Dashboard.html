@@ -18,9 +18,9 @@
 
     <div class="text-center" id="employeeLanding">
 
-        <button class="tablink col-2" onclick="openPage('Create', this, '#004170')">Submit Reimbursement Request</button>
-        <button class="tablink col-2" onclick="openPage('Pending', this, '#004170'); populatePending()">Pending Reimbursement Requests</button>
+        <button class="tablink col-2" id="defaultOpen" onclick="openPage('Pending', this, '#004170'); populatePending()">Pending Requests</button>
         <button class="tablink col-2" onclick="openPage('Completed', this, '#004170'); populateCompleted()">Completed Requests</button>
+        <button class="tablink col-2" onclick="openPage('Create', this, '#004170')">Submit Reimbursement Request</button>
         <button class="tablink col-2" id="updateUser" onclick="openPage('SignOut', this, '#004170')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
   <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
 </svg> <span name="updateUsername"></span></button>
@@ -73,6 +73,11 @@
                     </table>
 
                 </div>
+
+                <div>
+                    <button id="pendEmployeePrevBtn" onclick="pendingEmployeePrev()">Prev Page</button>
+                    <button id="pendEmployeeNextBtn" onclick="pendingEmployeeNext()">Next Page</button>
+                </div>
             </div>
         </div>
 
@@ -88,6 +93,7 @@
                                 <th>Amount</th>
                                 <th>Type</th>
                                 <th>Description</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="emp_completed_body">
@@ -97,6 +103,10 @@
 
                 </div>
 
+                <div>
+                    <button id="compEmployeePrevBtn" onclick="completedEmployeePrev()">Prev Page</button>
+                    <button id="compEmployeeNextBtn" onclick="completedEmployeeNext()">Next Page</button>
+                </div>
             </div>
         </div>
 

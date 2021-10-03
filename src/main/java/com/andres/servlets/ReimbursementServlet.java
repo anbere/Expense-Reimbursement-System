@@ -56,8 +56,6 @@ public class ReimbursementServlet extends HttpServlet {
 			System.out.println(e.getMessage());
 		}
 		
-		
-		
 	}
 
 }

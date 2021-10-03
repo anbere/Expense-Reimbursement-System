@@ -39,8 +39,10 @@ public class DisplayCompletedReimb extends HttpServlet {
 		HttpSession session = request.getSession();
 		Employee currentEmp = (Employee)session.getAttribute("currentUser");
 		
+		Integer offset = Integer.parseInt(request.getReader().readLine().replaceAll("[^\\d.]", ""));
+		
 		try {
-			ArrayList<Reimbursement> reimbursements = reimbursementService.getCompletedReimbursementsByUser(currentEmp.getUsername());
+			ArrayList<Reimbursement> reimbursements = reimbursementService.getCompletedReimbursementsByUser(currentEmp.getUsername(), offset);
 			System.out.println(reimbursements);
 			Gson gson = new Gson();
 			String jsonArray = gson.toJson(reimbursements);

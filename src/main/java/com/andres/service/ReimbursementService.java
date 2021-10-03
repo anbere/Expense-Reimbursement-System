@@ -30,14 +30,14 @@ public class ReimbursementService {
 		
 	}
 	
-	public ArrayList<Reimbursement> getPendingReimbursementsByUser(String username) throws SQLException
+	public ArrayList<Reimbursement> getPendingReimbursementsByUser(String username, int offset) throws SQLException
 	{
 		ArrayList<Reimbursement> pendingReimbursements = null;
 		
 		try(Connection conn = ConnectionUtil.getConnection())
 		{
 			try {
-				pendingReimbursements = reimbursementDAO.getPendingReimbursementsByUser(username, conn);
+				pendingReimbursements = reimbursementDAO.getPendingReimbursementsByUser(username, 12 * offset, conn);
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			} catch (NoPendingReimbursementsException e) {
@@ -49,14 +49,14 @@ public class ReimbursementService {
 		
 	}
 	
-	public ArrayList<Reimbursement> getCompletedReimbursementsByUser(String username) throws SQLException
+	public ArrayList<Reimbursement> getCompletedReimbursementsByUser(String username, int offset) throws SQLException
 	{
 		ArrayList<Reimbursement> completedReimbursements = null;
 		
 		try(Connection conn = ConnectionUtil.getConnection())
 		{
 			try {
-				completedReimbursements = reimbursementDAO.getCompletedReimbursementsByUser(username, conn);
+				completedReimbursements = reimbursementDAO.getCompletedReimbursementsByUser(username, 12 * offset, conn);
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			} catch (NoPendingReimbursementsException e) {
@@ -75,7 +75,7 @@ public class ReimbursementService {
 		try(Connection conn = ConnectionUtil.getConnection())
 		{
 			try {
-				pendingReimbursements = reimbursementDAO.getAllPendingReimbursements(2 * offset, conn);
+				pendingReimbursements = reimbursementDAO.getAllPendingReimbursements(12 * offset, conn);
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			} catch (NoPendingReimbursementsException e) {
@@ -93,7 +93,7 @@ public class ReimbursementService {
 		try(Connection conn = ConnectionUtil.getConnection())
 		{
 			try {
-				pendingReimbursements = reimbursementDAO.getAllCompletedReimbursements(2 * offset, conn);
+				pendingReimbursements = reimbursementDAO.getAllCompletedReimbursements(12 * offset, conn);
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			} catch (NoPendingReimbursementsException e) {

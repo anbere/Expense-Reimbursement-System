@@ -55,7 +55,7 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 	}
 
 	@Override
-	public ArrayList<Reimbursement> getPendingReimbursementsByUser(String username, Connection conn)
+	public ArrayList<Reimbursement> getPendingReimbursementsByUser(String username, int offset, Connection conn)
 			throws SQLException, NoPendingReimbursementsException {
 
 		ArrayList<Reimbursement> reimbs = new ArrayList<>();
@@ -63,11 +63,13 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 		String sql = "SELECT r.reimb_id, rs.reimb_status, r.reimb_author, rt.reimb_type, r.reimb_amount, r.reimb_description \r\n"
 				+ "FROM ers.reimbursements r \r\n" + "join ers.reimbursement_type rt \r\n"
 				+ "on r.reimb_type_id  = rt.reimb_type_id \r\n" + "join ers.reimbursement_status rs \r\n"
-				+ "on r.reimb_status_id = rs.reimb_status_id \r\n"
-				+ "where r.reimb_author = ? and rs.reimb_status = 'PENDING'";
+				+ "on r.reimb_status_id = rs.reimb_status_id \r\n" + "where r.reimb_author = ? and rs.reimb_status = 'PENDING'\r\n"
+				+ "order by r.reimb_author, r.reimb_id\r\n"
+				+ "LIMIT 13 OFFSET ?";
 
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setString(1, username);
+		ps.setInt(2, offset);
 
 		ResultSet rs = ps.executeQuery();
 
@@ -81,7 +83,7 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 	}
 
 	@Override
-	public ArrayList<Reimbursement> getCompletedReimbursementsByUser(String username, Connection conn)
+	public ArrayList<Reimbursement> getCompletedReimbursementsByUser(String username, int offset, Connection conn)
 			throws SQLException, NoPendingReimbursementsException {
 
 		ArrayList<Reimbursement> reimbs = new ArrayList<>();
@@ -89,10 +91,12 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 		String sql = "SELECT r.reimb_id, rs.reimb_status, r.reimb_author, rt.reimb_type, r.reimb_amount, r.reimb_description \r\n"
 				+ "FROM ers.reimbursements r \r\n" + "join ers.reimbursement_type rt \r\n"
 				+ "on r.reimb_type_id  = rt.reimb_type_id \r\n" + "join ers.reimbursement_status rs \r\n"
-				+ "on r.reimb_status_id = rs.reimb_status_id \r\n"
-				+ "where r.reimb_author = ? and rs.reimb_status != 'PENDING'";
+				+ "on r.reimb_status_id = rs.reimb_status_id \r\n" + "where r.reimb_author = ? and rs.reimb_status != 'PENDING'\r\n"
+				+ "order by r.reimb_author, r.reimb_id\r\n"
+				+ "LIMIT 13 OFFSET ?";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setString(1, username);
+		ps.setInt(2, offset);
 
 		ResultSet rs = ps.executeQuery();
 
@@ -115,12 +119,14 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 				+ "FROM ers.reimbursements r \r\n" + "join ers.reimbursement_type rt \r\n"
 				+ "on r.reimb_type_id  = rt.reimb_type_id \r\n" + "join ers.reimbursement_status rs \r\n"
 				+ "on r.reimb_status_id = rs.reimb_status_id \r\n" + "where rs.reimb_status = 'PENDING'\r\n"
-				+ "order by r.reimb_author\r\n"
-				+ "LIMIT 2 OFFSET ?";
+				+ "order by r.reimb_author, r.reimb_id\r\n"
+				+ "LIMIT 13 OFFSET ?";
+		
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, offset);
+		System.out.println("ps before: " + ps.toString());
 		ResultSet rs = ps.executeQuery();
-
+		System.out.println("ps after: " + ps.toString());
 		while (rs.next()) {
 			reimbs.add(
 					new Reimbursement(rs.getInt("reimb_id"), rs.getString("reimb_status"), rs.getString("reimb_author"),
@@ -140,8 +146,8 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 				+ "FROM ers.reimbursements r \r\n" + "join ers.reimbursement_type rt \r\n"
 				+ "on r.reimb_type_id  = rt.reimb_type_id \r\n" + "join ers.reimbursement_status rs \r\n"
 				+ "on r.reimb_status_id = rs.reimb_status_id \r\n" + "where rs.reimb_status != 'PENDING'\r\n"
-				+ "order by r.reimb_author\r\n"
-				+ "LIMIT 2 OFFSET ?";
+				+ "order by r.reimb_author, r.reimb_id\r\n"
+				+ "LIMIT 13 OFFSET ?";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, offset);
 		ResultSet rs = ps.executeQuery();

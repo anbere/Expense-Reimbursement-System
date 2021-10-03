@@ -11,9 +11,9 @@ public interface ReimbursementDAO {
 
 	public Reimbursement createReimbursementByUser(String username, int r_type, int amount, String description, Connection conn) throws SQLException;
 	
-	public ArrayList<Reimbursement> getPendingReimbursementsByUser(String username, Connection conn) throws SQLException, NoPendingReimbursementsException;
+	public ArrayList<Reimbursement> getPendingReimbursementsByUser(String username, int offset, Connection conn) throws SQLException, NoPendingReimbursementsException;
 
-	public ArrayList<Reimbursement> getCompletedReimbursementsByUser(String username, Connection conn) throws SQLException, NoPendingReimbursementsException;
+	public ArrayList<Reimbursement> getCompletedReimbursementsByUser(String username, int offset, Connection conn) throws SQLException, NoPendingReimbursementsException;
 
 	public ArrayList<Reimbursement> getAllPendingReimbursements(int offset, Connection conn) throws SQLException, NoPendingReimbursementsException;
 

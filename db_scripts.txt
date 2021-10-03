@@ -68,16 +68,83 @@ on r.reimb_type_id  = rt.reimb_type_id
 join ers.reimbursement_status rs 
 on r.reimb_status_id = rs.reimb_status_id
 where r.reimb_status_id = 0
-order by r.reimb_author, reimb_id 
+order by r.reimb_author, r.reimb_id
+limit 5 offset 5*2
+
+SELECT r.reimb_id, rs.reimb_status, r.reimb_author, rt.reimb_type, r.reimb_amount, r.reimb_description 
+FROM ers.reimbursements r 
+join ers.reimbursement_type rt 
+on r.reimb_type_id  = rt.reimb_type_id 
+join ers.reimbursement_status rs 
+on r.reimb_status_id = rs.reimb_status_id 
+where rs.reimb_status = 'PENDING'
+order by r.reimb_author, r.reimb_id
+LIMIT 5 OFFSET 5*1
 
 
+INSERT INTO ers.reimbursements (reimb_id,reimb_status_id,reimb_author,reimb_type_id,reimb_amount,reimb_description)
+VALUES
+  (67832,1,'jonathan',1,433953,'libero. Integer in magna. Phasellus'),
+  (38814,1,'jonathan',1,64978,'Fusce dolor quam, elementum at, egestas a, scelerisque'),
+  (10461,0,'jonathan',2,387086,'et ultrices posuere cubilia Curae Donec tincidunt. Donec vitae erat vel pede'),
+  (24522,0,'jonathan',2,16486,'a odio semper cursus. Integer mollis. Integer tincidunt aliquam arcu. Aliquam ultrices iaculis'),
+  (22763,2,'jonathan',3,460306,'lectus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.'),
+  (81964,2,'jonathan',1,260105,'ad litora torquent per conubia'),
+  (82209,0,'jonathan',1,149009,'vehicula et, rutrum eu, ultrices sit amet, risus. Donec nibh'),
+  (35121,0,'jonathan',2,78767,'dolor. Nulla semper tellus id nunc interdum feugiat. Sed nec'),
+  (38503,2,'jonathan',3,424860,'neque sed dictum eleifend, nunc risus varius orci, in'),
+  (10740,1,'jonathan',1,195375,'aliquet, metus urna convallis erat, eget tincidunt dui augue eu tellus. Phasellus elit');
+INSERT INTO ers.reimbursements (reimb_id,reimb_status_id,reimb_author,reimb_type_id,reimb_amount,reimb_description)
+VALUES
+  (76387,0,'jonathan',3,404829,'Sed nunc est, mollis non, cursus non, egestas'),
+  (81060,2,'jonathan',1,458849,'sem, vitae aliquam eros turpis non enim.'),
+  (17411,1,'jonathan',0,184125,'Donec consectetuer mauris id sapien. Cras dolor'),
+  (68080,2,'jonathan',0,400144,'semper pretium neque. Morbi quis urna. Nunc quis arcu vel quam'),
+  (70618,2,'jonathan',3,196995,'consectetuer adipiscing elit. Aliquam auctor, velit eget laoreet posuere, enim nisl elementum purus,'),
+  (85166,1,'jonathan',1,29041,'Curabitur sed tortor. Integer aliquam adipiscing lacus. Ut nec urna et'),
+  (98535,0,'jonathan',1,422474,'sit amet, consectetuer adipiscing elit. Aliquam'),
+  (42046,0,'jonathan',0,402130,'mi lorem, vehicula et, rutrum eu, ultrices sit amet, risus. Donec nibh'),
+  (62403,0,'jonathan',1,69730,'magna a tortor. Nunc commodo auctor velit. Aliquam nisl. Nulla eu neque'),
+  (81466,1,'jonathan',2,470160,'taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Mauris');
+INSERT INTO ers.reimbursements (reimb_id,reimb_status_id,reimb_author,reimb_type_id,reimb_amount,reimb_description)
+VALUES
+  (65357,2,'jonathan',1,192980,'tellus, imperdiet non, vestibulum nec, euismod'),
+  (67697,1,'jonathan',1,357342,'quis, pede. Suspendisse dui.'),
+  (59156,1,'jonathan',2,302554,'semper cursus. Integer mollis. Integer tincidunt aliquam arcu.'),
+  (34813,1,'jonathan',2,75705,'orci. Ut semper pretium neque. Morbi quis urna. Nunc quis');
+ 
+ INSERT INTO ers.reimbursements (reimb_id,reimb_status_id,reimb_author,reimb_type_id,reimb_amount,reimb_description)
+VALUES
+  (22441,0,'anbers',0,195762,'elementum, lorem ut aliquam iaculis, lacus pede sagittis augue,'),
+  (35834,0,'anbers',3,118515,'sed dictum eleifend, nunc risus varius orci, in consequat enim diam vel'),
+  (20916,2,'anbers',1,73623,'est, congue a, aliquet vel, vulputate eu,'),
+  (30071,1,'anbers',2,166861,'magna et ipsum cursus'),
+  (77774,1,'anbers',0,74262,'volutpat. Nulla dignissim. Maecenas'),
+  (81017,2,'anbers',0,384150,'arcu. Vestibulum ut eros non enim commodo'),
+  (51769,0,'anbers',1,336639,'lacinia at, iaculis quis, pede. Praesent'),
+  (40528,0,'anbers',2,171485,'id magna et ipsum cursus vestibulum. Mauris magna. Duis dignissim'),
+  (95462,1,'anbers',0,114362,'Proin non massa non ante bibendum ullamcorper. Duis cursus, diam at pretium aliquet,'),
+  (21899,1,'anbers',1,85189,'adipiscing non, luctus sit amet, faucibus ut, nulla.');
+INSERT INTO ers.reimbursements (reimb_id,reimb_status_id,reimb_author,reimb_type_id,reimb_amount,reimb_description)
+VALUES
+  (41093,2,'anbers',1,224396,'dapibus rutrum, justo. Praesent luctus. Curabitur'),
+  (18345,1,'anbers',0,13480,'ac mattis velit justo nec'),
+  (68327,1,'anbers',2,324016,'nunc sed libero. Proin sed turpis nec mauris blandit mattis.'),
+  (38446,0,'anbers',0,98825,'iaculis, lacus pede sagittis augue, eu tempor erat neque non quam.'),
+  (65946,1,'anbers',1,231608,'Curabitur consequat, lectus sit amet luctus vulputate, nisi sem semper'),
+  (13013,1,'anbers',1,341798,'Suspendisse sed dolor. Fusce mi lorem,'),
+  (36154,2,'anbers',0,256443,'varius et, euismod et, commodo at,'),
+  (34605,1,'anbers',1,170949,'amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam'),
+  (85832,2,'anbers',2,378155,'vel est tempor bibendum. Donec felis orci, adipiscing non, luctus sit amet, faucibus ut,'),
+  (44156,1,'anbers',2,160121,'Quisque ornare tortor at risus. Nunc ac');
+INSERT INTO ers.reimbursements (reimb_id,reimb_status_id,reimb_author,reimb_type_id,reimb_amount,reimb_description)
+VALUES
+  (44345,1,'anbers',1,142724,'et magnis dis parturient montes, nascetur ridiculus mus.'),
+  (43486,2,'anbers',2,52746,'vitae velit egestas lacinia. Sed congue, elit sed'),
+  (48785,1,'anbers',0,487032,'et magnis dis parturient montes, nascetur ridiculus mus. Donec'),
+  (77842,1,'anbers',1,141573,'ultrices posuere cubilia Curae Donec tincidunt. Donec');
 
-
-insert into ers.reimbursements values(12346, 0, 'anbers', 1, 696969, 'This is a description');
-insert into ers.reimbursements values(54321, 0, 'anbers', 1, 696969, 'This is a description');
-insert into ers.reimbursements values(12344, 0, 'anbers', 1, 696969, 'This is a description');
-insert into ers.reimbursements values(12343, 0, 'anbers', 1, 696969, 'This is a description');
-insert into ers.reimbursements values(12342, 0, 'anbers', 1, 696969, 'This is a description');
+ 
 
 update ers.reimbursements 
 set reimb_status_id = 2
