@@ -23,6 +23,30 @@ function update() {
         });
 };
 
+function updateSignout() {
+    fetch('ReturnUserDataServlet', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+        .then(data => {
+            if (data == null) {
+                window.location.href = "index.html"
+            }
+            console.log("data: ", data);
+            document.getElementById("cardUsername").innerHTML = data.username;
+            document.getElementById("cardName").innerHTML = data.first_name + " " + data.last_name;
+            document.getElementById("cardEmail").innerHTML = data.email;
+
+            document.getElementById("updatedFirstName").value = data.first_name;
+            document.getElementById("updatedLastName").value = data.last_name;
+            document.getElementById("updatedEmail").value = data.email;
+        });
+
+
+}
+
 function populatePending() {
     // let type = { type: "PENDING" }
     fetch('DisplayPendingReimb', {
@@ -345,6 +369,44 @@ function validAmount(amount) {
 
 function validDescription(desc) {
     return (desc.length < 250);
+}
+
+function updateUserInfo() {
+    let first = document.getElementById("updatedFirstName").value.trim();
+    let last = document.getElementById("updatedLastName").value.trim();
+    let email = document.getElementById("updatedEmail").value.trim();
+
+    if (/\s/.test(first)) {
+        // It has any kind of whitespace
+        alert("First name must not contain spaces")
+        return;
+    } else if (/\s/.test(last)) {
+        // It has any kind of whitespace
+        alert("Last name must not contain spaces")
+        return;
+    }
+
+    if (!validEmail(email)) {
+        alert("Invalid Email")
+        return;
+    }
+
+    console.log(first + " " + last + " " + email);
+}
+
+function validFirstName() {
+    if (/\s/.test(fi)) {
+        // It has any kind of whitespace
+    }
+}
+
+function validLastName() {
+
+}
+
+function validEmail(email) {
+    let RegExpr = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    return (RegExpr.test(email));
 }
 
 function reimbursementCreated() {

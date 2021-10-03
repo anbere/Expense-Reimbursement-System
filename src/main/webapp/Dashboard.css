@@ -38,7 +38,7 @@ body {
     margin: auto;
 }
 
-.btn {
+.mybtn {
     background-color: #004170;
     color: white;
     padding: 15px 20px;
@@ -64,7 +64,7 @@ body {
     opacity: 1;
 }
 
-.btn:hover {
+.mybtn:hover {
     color: #fff;
     opacity: 1;
 }
@@ -75,4 +75,13 @@ body {
 
 .showButton {
     visibility: visible;
+}
+
+#updatedFirstName,
+#updatedLastName,
+#updatedEmail {
+    outline: none;
+    box-shadow: none !important;
+    border: 1px solid #006fbe !important;
+    color: #006fbe;
 }
