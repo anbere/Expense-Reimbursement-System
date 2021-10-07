@@ -70,6 +70,12 @@
 		<description></description>
 		<servlet-class>com.andres.servlets.ReturnUserDataServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>UpdateUserInfoServlet</servlet-name>
+		<display-name>UpdateUserInfoServlet</display-name>
+		<description></description>
+		<servlet-class>com.andres.servlets.UpdateUserInfoServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
 		<url-pattern>/login</url-pattern>
@@ -113,5 +119,9 @@
 	<servlet-mapping>
 		<servlet-name>ReturnUserDataServlet</servlet-name>
 		<url-pattern>/ReturnUserDataServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UpdateUserInfoServlet</servlet-name>
+		<url-pattern>/UpdateUserInfoServlet</url-pattern>
 	</servlet-mapping>
 </web-app>

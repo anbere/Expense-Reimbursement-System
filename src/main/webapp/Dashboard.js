@@ -262,10 +262,10 @@ function populateManagerCompleted() {
                 var row = empTable.insertRow(-1);
                 var id = row.insertCell(0);
                 var empUser = row.insertCell(1)
-                var status = row.insertCell(2);
-                var amount = row.insertCell(3);
-                var type = row.insertCell(4);
-                var description = row.insertCell(5);
+                var amount = row.insertCell(2);
+                var type = row.insertCell(3);
+                var description = row.insertCell(4);
+                var status = row.insertCell(5);
 
                 id.innerHTML = db_row.r_id;
                 empUser.innerHTML = db_row.r_author;
@@ -417,7 +417,7 @@ function reimbursementCreated() {
 
 function openPage(pageName, elmnt, color) {
     //Hide all elements with class="tabcontent" by default */
-    var i, tabcontent, tablinks;
+    var i, tabcontent, tablinks, tablinksMan
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
@@ -425,8 +425,13 @@ function openPage(pageName, elmnt, color) {
 
     // Remove the background color of all tablinks/buttons
     tablinks = document.getElementsByClassName("tablink");
+    tablinksMan = document.getElementsByClassName("tablinkMan");
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].style.backgroundColor = "";
+    }
+
+    for (i = 0; i < tablinksMan.length; i++) {
+        tablinksMan[i].style.backgroundColor = "";
     }
 
     // Show the specific tab content

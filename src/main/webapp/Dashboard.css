@@ -12,7 +12,23 @@
     width: 25%;
 }
 
+.tablinkMan {
+    background-color: #2d8fd5;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px;
+    font-size: 20px;
+    width: 33.33333%;
+}
+
 .tablink:hover {
+    background-color: #006fbe;
+}
+
+.tablinkMan:hover {
     background-color: #006fbe;
 }
 
